@@ -1,7 +1,31 @@
-async function start() {
+import { program } from 'commander'
+import {TemplateTypes} from "./types/TemplateTypes";
+import {AppConfig} from "./types/AppConfig";
+import {createConfigHelper} from "./utils/fs";
+import {run} from "./core/task";
+const pkg = require('../package.json')
 
-}
+program.version(pkg.version)
+  .description(pkg.description)
 
-start().then(() => {
-  //console.log('then')
-})
+program.command('create')
+  .argument('<DirName>', 'name of dir')
+  .argument('[template]', 'template')
+  .description('create an empty package by DirName')
+  .action((targetDir, template) => {
+    template = template ?? TemplateTypes.TS_NODE
+
+    const workDir = process.cwd()
+    const config: AppConfig = {
+      targetDir,
+      template,
+      workDir,
+      helper: createConfigHelper(targetDir)
+    }
+
+    run(config).then(() => {
+      console.log('end')
+    })
+  })
+
+program.parse(process.argv)

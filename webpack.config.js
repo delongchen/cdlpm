@@ -1,7 +1,6 @@
 const path = require('path')
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const { AddPkgPlugin } = require('./add-pkg-plugin')
 
 const copyFromSrc = path => {
   const outPath = `src/${path}`
@@ -12,10 +11,6 @@ const webpackConfig = {
   entry: './src/index.ts',
   mode: "production",
   target: 'node',
-  optimization: {
-    minimize: false,
-    usedExports: true
-  },
   module: {
     rules: [
       {
@@ -26,20 +21,14 @@ const webpackConfig = {
     ],
   },
   plugins: [
-    new CleanWebpackPlugin,
-    new AddPkgPlugin,
-    new CopyWebpackPlugin({
-      patterns: [
-        copyFromSrc('config/config.yml')
-      ]
-    }),
+    new CleanWebpackPlugin
   ],
   resolve: {
     extensions: ['.ts', '.js', '.json']
   },
   output: {
-    filename: "main.js",
-    path: path.resolve(__dirname, 'dist')
+    filename: "index.js",
+    path: path.resolve(__dirname, 'lib')
   }
 }
 
