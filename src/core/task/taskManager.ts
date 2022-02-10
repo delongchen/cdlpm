@@ -9,64 +9,49 @@ const logger = createLogger({
 })
 
 const syncTasks: Task[] = []
-const asyncTasks: Task[] = []
-const importantTasks: Task[] = []
-
-function addSyncTask(task: Task) {
+export function addSyncTask(task: Task) {
   syncTasks.push(task)
 }
 
-function addAsyncTask(task: Task) {
-  asyncTasks.push(task)
-}
-
-function addImportantTask(task: Task) {
-  importantTasks.push(task)
-}
-
-async function runOneTask(task: Task, config: AppConfig) {
+async function runAsyncTask(task: Task, config: AppConfig) {
   try {
-    logger.info(`run ${task.name}`)
+    logger.info(`${task.name} running`)
     await task.run(config)
   } catch (e: any) {
+    logger.error(task.name)
     logger.error(e)
+    throw { name: task.name, e }
   }
 }
 
-function syncTasksToAsync(): Task {
+export function createAsyncTask(name: string, tasks: Task[], config: AppConfig): Task {
   return {
-    name: 'SyncTasks',
-    async run(config) {
-      for (let i = 0; i < syncTasks.length; i++) {
-        await runOneTask(syncTasks[i], config)
+    name,
+    async run() {
+      const ps = tasks.map(task => runAsyncTask(task, config))
+      const errs: string[] = []
+      let root = Promise.resolve()
+      for (let i = 0; i < ps.length; i++) {
+        root = root.then(() => ps[i])
+          .catch(reason => {
+            errs.push(reason.name)
+          })
+      }
+      await root
+      if (errs.length) {
+        throw new Error(`${name} err: [${errs}]`)
       }
     }
   }
 }
 
-async function runTasks(config: AppConfig) {
+export async function runTasks(config: AppConfig) {
   try {
-    for (let i = 0; i < importantTasks.length; i++) {
-      const task = importantTasks[i]
-      await task.run(config)
+    for (let i = 0; i < syncTasks.length; i++) {
+      await syncTasks[i].run(config)
     }
   } catch (e: any) {
     logger.error(e)
     return
   }
-
-  asyncTasks.push(syncTasksToAsync())
-  const ps = asyncTasks.map(task => runOneTask(task, config))
-  let root = Promise.resolve()
-  for (let i = 0; i < ps.length; i++) {
-    root = root.then(() => ps[i])
-  }
-  await root
-}
-
-export {
-  runTasks,
-  addAsyncTask,
-  addSyncTask,
-  addImportantTask
 }

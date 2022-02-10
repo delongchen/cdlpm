@@ -1,10 +1,8 @@
-import {AppConfig} from "../../types/AppConfig";
-import {addImportantTask, runTasks} from "./taskManager";
+import {addSyncTask, runTasks} from "./taskManager";
+import {createTargetDir} from "./tasks/createTargetDir";
 
-import {createTargetDir} from "./vip/createTargetDir";
+addSyncTask(createTargetDir)
 
-addImportantTask(createTargetDir)
-
-export async function run(config: AppConfig) {
-  await runTasks(config)
+export {
+  runTasks
 }
