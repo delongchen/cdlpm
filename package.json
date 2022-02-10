@@ -4,9 +4,9 @@
   "description": "",
   "main": "./lib/index.js",
   "scripts": {
-    "dev": "ts-node src/index.ts -d aaa",
-    "build-tsc": "rm -rf lib && tsc",
+    "dev": "ts-node src/index.ts create aaa",
     "build": "webpack",
+    "build-tsc": "rm -rf lib && tsc",
     "test": "node lib/index.js create aaa | bunyan"
   },
   "repository": {
@@ -23,7 +23,6 @@
   "devDependencies": {
     "@types/bunyan": "^1.8.8",
     "@types/node": "^17.0.12",
-    "bunyan": "^1.8.15",
     "clean-webpack-plugin": "^4.0.0",
     "commander": "^9.0.0",
     "copy-webpack-plugin": "^10.2.4",
@@ -34,6 +33,12 @@
     "webpack-cli": "^4.9.2"
   },
   "files": [
-    "lib/**/*"
-  ]
+    "lib/**/*",
+    "bin/**/*"
+  ],
+  "dependencies": {
+    "@types/shelljs": "^0.8.11",
+    "shelljs": "^0.8.5",
+    "bunyan": "^1.8.15"
+  }
 }
