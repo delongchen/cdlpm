@@ -1,4 +1,5 @@
 {
   "temp": "templates",
+  "index_yaml": "index.yml",
   "index": "index.json"
 }

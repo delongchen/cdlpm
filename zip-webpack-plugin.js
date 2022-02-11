@@ -1,9 +1,10 @@
 //import { Compiler, Compilation } from 'webpack'
-const { opendir } = require('fs/promises')
+const { opendir, readFile } = require('fs/promises')
 const { Dirent } = require('fs')
 const { join, basename } = require('path')
 const AdmZip = require('adm-zip')
 const CONST = require('./const.json')
+const yaml = require('yaml')
 
 const pluginName = 'ZipAndCopy'
 
@@ -47,8 +48,9 @@ async function createZip(path) {
       zip.addLocalFolder(join(path, dirent.name))
     } else if (dirent.isFile()) {
       const filePath = join(path, dirent.name)
-      if (dirent.name === CONST.index) {
-        result.index = require(filePath)
+      if (dirent.name === CONST.index_yaml) {
+        const raw = await readFile(filePath, 'utf8')
+        result.index = yaml.parse(raw)
       } else {
         zip.addLocalFile(filePath)
       }
