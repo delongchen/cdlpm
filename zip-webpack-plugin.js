@@ -3,7 +3,7 @@ const { opendir } = require('fs/promises')
 const { Dirent } = require('fs')
 const { join, basename } = require('path')
 const AdmZip = require('adm-zip')
-
+const CONST = require('./const.json')
 
 const pluginName = 'ZipAndCopy'
 
@@ -35,19 +35,30 @@ async function getDirFilePaths(dirName, filter) {
 /**
  *
  * @param path { string }
- * @return { Promise<AdmZip> }
+ * @return { Promise<{ zip: AdmZip, index: Object }> }
  */
 async function createZip(path) {
   const dir = await opendir(path)
   const zip = new AdmZip
+  const result = {}
+
   for await (const dirent of dir) {
     if (dirent.isDirectory()) {
       zip.addLocalFolder(join(path, dirent.name))
     } else if (dirent.isFile()) {
-      zip.addLocalFile(join(path, dirent.name))
+      const filePath = join(path, dirent.name)
+      if (dirent.name === CONST.index) {
+        result.index = require(filePath)
+      } else {
+        zip.addLocalFile(filePath)
+      }
     }
   }
-  return zip
+
+  result.index ??= {}
+  result.zip = zip
+
+  return result
 }
 
 class ZipWebpackPlugin {
@@ -76,7 +87,9 @@ class ZipWebpackPlugin {
           stage: Compilation.PROCESS_ASSETS_STAGE_SUMMARIZE
         },
         async (_, cb) => {
+
           const temps = []
+          const indexes = {}
           for (let i = 0; i < dirs.length; i++) {
             (await getDirFilePaths(dirs[i]))
               .forEach(v => temps.push(v))
@@ -84,12 +97,19 @@ class ZipWebpackPlugin {
 
           for (let i = 0; i < temps.length; i++) {
             const temp = temps[i]
-            const zip = await createZip(temp)
+            const tempName = basename(temp)
+            const { zip, index } = await createZip(temp)
+            indexes[tempName] = index
             compilation.emitAsset(
-              join('templates', basename(temp) + '.zip'),
+              join(CONST.temp, tempName + '.zip'),
               new RawSource(zip.toBuffer())
             )
           }
+
+          compilation.emitAsset(
+            join(CONST.temp, CONST.index),
+            new RawSource(JSON.stringify(indexes, null, 2))
+          )
           cb()
         }
       )
