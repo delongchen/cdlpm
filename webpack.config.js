@@ -18,7 +18,6 @@ const webpackConfig = {
   plugins: [
     new CleanWebpackPlugin,
     new ZipWebpackPlugin([
-      'src/assets',
       'src/templates'
     ])
   ],

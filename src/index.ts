@@ -14,7 +14,7 @@ program.command('create')
   .argument('[template]', 'template')
   .description('create an empty package by DirName')
   .action((targetDir, template) => {
-    template = template ?? TemplateTypes.TS_NODE
+    template = template ?? TemplateTypes.BASIC
 
     const workDir = process.cwd()
 

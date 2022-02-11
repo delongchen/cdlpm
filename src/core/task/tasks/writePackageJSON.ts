@@ -13,7 +13,7 @@ export const writePackageJSON: Task = {
       description: '',
       main: './lib/index.js',
       scripts: {
-        dev: "ts-node src/index.ts",
+        dev: "ts-node-app src/index.ts",
         build: "webpack"
       },
       repository: {
