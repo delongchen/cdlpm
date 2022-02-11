@@ -1,26 +1,18 @@
-import { Task } from "../../types/TaskTypes";
+import {Task} from "../../types/TaskTypes";
 import {AppConfig} from "../../types/AppConfig";
-import { createLogger } from 'bunyan'
-
-
-const logger = createLogger({
-  stream: process.stdout,
-  name: 'task'
-})
+import {rm} from "fs/promises";
 
 const syncTasks: Task[] = []
+
 export function addSyncTask(task: Task) {
   syncTasks.push(task)
 }
 
 async function runAsyncTask(task: Task, config: AppConfig) {
   try {
-    logger.info(`${task.name} running`)
     await task.run(config)
   } catch (e: any) {
-    logger.error(task.name)
-    logger.error(e)
-    throw { name: task.name, e }
+    throw {name: task.name, e}
   }
 }
 
@@ -45,15 +37,27 @@ export function createAsyncTask(name: string, tasks: Task[], config: AppConfig):
   }
 }
 
+async function cleanUp(path: string) {
+  return rm(path, { force: true, recursive: true })
+}
+
 export async function runTasks(config: AppConfig) {
-  try {
-    for (let i = 0; i < syncTasks.length; i++) {
-      const task = syncTasks[i]
-      logger.info(`run ${task.name}`)
+  console.log(`creating package ${config.template}`)
+  for (let i = 0; i < syncTasks.length; i++) {
+    const task = syncTasks[i]
+    try {
+      const start = Date.now()
       await task.run(config)
+      const end = Date.now()
+      console.log(`run [${i + 1}/${syncTasks.length}]: ${task.name} [${end - start} ms]`)
+    } catch (e: any) {
+      console.log(`task '${task.name}' throws error`)
+      console.error(e)
+      console.log('start cleanup')
+      await cleanUp(config.helper.resolveTargetDir(''))
+      break
     }
-  } catch (e: any) {
-    logger.error(e)
-    return
   }
+
+  console.log('run tasks finished')
 }

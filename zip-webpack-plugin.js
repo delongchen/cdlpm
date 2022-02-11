@@ -45,7 +45,8 @@ async function createZip(path) {
 
   for await (const dirent of dir) {
     if (dirent.isDirectory()) {
-      zip.addLocalFolder(join(path, dirent.name))
+      const name = dirent.name
+      zip.addLocalFolder(join(path, name), name)
     } else if (dirent.isFile()) {
       const filePath = join(path, dirent.name)
       if (dirent.name === CONST.index_yaml) {

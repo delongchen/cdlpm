@@ -4,10 +4,10 @@
   "description": "",
   "main": "./lib/index.js",
   "scripts": {
-    "dev": "ts-node src/index.ts create aaa | bunyan",
+    "dev": "ts-node src/index.ts create aaa",
     "build": "webpack",
     "build-tsc": "rm -rf lib && tsc",
-    "test": "node lib/index.js create aaa | bunyan"
+    "test": "node lib/index.js create aaa"
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,6 @@
   "homepage": "https://github.com/delongchen/cdlpm#readme",
   "devDependencies": {
     "@types/adm-zip": "^0.4.34",
-    "@types/bunyan": "^1.8.8",
     "@types/node": "^17.0.12",
     "adm-zip": "^0.5.9",
     "clean-webpack-plugin": "^4.0.0",
@@ -42,6 +41,5 @@
     "bin/**/*"
   ],
   "dependencies": {
-    "bunyan": "^1.8.15"
   }
 }

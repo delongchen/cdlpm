@@ -16,10 +16,10 @@ const webpackConfig = {
     ],
   },
   plugins: [
-    new CleanWebpackPlugin,
     new ZipWebpackPlugin([
       'src/templates'
-    ])
+    ]),
+    new CleanWebpackPlugin
   ],
   resolve: {
     extensions: ['.ts', '.js', '.json']

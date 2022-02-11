@@ -2,7 +2,7 @@ import {Task} from "../../../types/TaskTypes";
 import { stat, mkdir } from 'fs/promises'
 
 export const createTargetDir: Task = {
-  name: 'createTargetDir',
+  name: 'create target directory',
   async run(config) {
     const {helper} = config
     const targetPath = helper.resolveTargetDir('')
