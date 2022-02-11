@@ -10,11 +10,16 @@ export interface GitUserInfo {
   email: string
 }
 
+interface AppContext {
+  exists: boolean
+}
+
 export interface AppConfig {
   targetDir: string
   template: string
   workDir: string
   indexes: TemplateIndexes
   git: GitUserInfo
+  context: AppContext
   helper: AppHelper
 }

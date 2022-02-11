@@ -1,5 +1,6 @@
 const path = require('path')
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const CopyPlugin = require('copy-webpack-plugin')
 const { ZipWebpackPlugin } = require('./zip-webpack-plugin.js')
 
 const webpackConfig = {
@@ -16,6 +17,11 @@ const webpackConfig = {
     ],
   },
   plugins: [
+    new CopyPlugin({
+      patterns: [
+        './exec-child.js'
+      ]
+    }),
     new ZipWebpackPlugin([
       'src/templates'
     ]),

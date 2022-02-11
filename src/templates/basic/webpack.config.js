@@ -1,16 +1,11 @@
 const path = require('path')
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-
-const copyFromSrc = path => {
-  const outPath = `src/${path}`
-  return { from: outPath, to: outPath }
-}
 
 const webpackConfig = {
   entry: './src/index.ts',
   mode: "production",
   target: 'node',
+  //optimization: { minimize: false, usedExports: true },
   module: {
     rules: [
       {

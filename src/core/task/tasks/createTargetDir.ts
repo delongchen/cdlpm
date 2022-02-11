@@ -4,7 +4,7 @@ import { stat, mkdir } from 'fs/promises'
 export const createTargetDir: Task = {
   name: 'create target directory',
   async run(config) {
-    const {helper} = config
+    const {helper, context} = config
     const targetPath = helper.resolveTargetDir('')
     const targetStat = await stat(targetPath)
       .catch(e => {
@@ -14,6 +14,7 @@ export const createTargetDir: Task = {
       })
 
     if (targetStat && targetStat.isDirectory()) {
+      context.exists = true
       throw new Error('dir already exists')
     }
 

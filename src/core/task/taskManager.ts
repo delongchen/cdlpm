@@ -53,8 +53,12 @@ export async function runTasks(config: AppConfig) {
     } catch (e: any) {
       console.log(`task '${task.name}' throws error`)
       console.error(e)
-      console.log('start cleanup')
-      await cleanUp(config.helper.resolveTargetDir(''))
+
+      if (!config.context.exists) {
+        console.log('start cleanup')
+        await cleanUp(config.helper.resolveTargetDir(''))
+      }
+
       break
     }
   }
