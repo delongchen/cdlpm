@@ -48,7 +48,9 @@ export function createAsyncTask(name: string, tasks: Task[], config: AppConfig):
 export async function runTasks(config: AppConfig) {
   try {
     for (let i = 0; i < syncTasks.length; i++) {
-      await syncTasks[i].run(config)
+      const task = syncTasks[i]
+      logger.info(`run ${task.name}`)
+      await task.run(config)
     }
   } catch (e: any) {
     logger.error(e)

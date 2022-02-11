@@ -4,10 +4,10 @@ import {AppConfig} from "./types/AppConfig";
 import {createConfigHelper, getGitInfo} from "./utils/fs";
 import {runTasks} from "./core/task";
 import { which } from 'shelljs'
-const pkg = require('../package.json')
+const { version, description } = require('../package.json')
 
-program.version(pkg.version)
-  .description(pkg.description)
+program.version(version)
+  .description(description)
 
 program.command('create')
   .argument('<DirName>', 'name of dir')

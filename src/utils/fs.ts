@@ -17,7 +17,7 @@ export const createConfigHelper = (targetDir: string): AppHelper => {
 }
 
 function getExecStr(cmd: string) {
-  const result = exec(cmd)
+  const result = exec(cmd, { silent: true })
   return result.toString().trim()
 }
 

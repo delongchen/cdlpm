@@ -1,6 +1,7 @@
 const path = require('path')
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const { ZipWebpackPlugin } = require('./zip-webpack-plugin.js')
 
 const copyFromSrc = path => {
   const outPath = `src/${path}`
@@ -21,7 +22,11 @@ const webpackConfig = {
     ],
   },
   plugins: [
-    new CleanWebpackPlugin
+    new CleanWebpackPlugin,
+    new ZipWebpackPlugin([
+      'src/assets',
+      'src/templates'
+    ])
   ],
   resolve: {
     extensions: ['.ts', '.js', '.json']
