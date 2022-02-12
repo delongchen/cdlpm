@@ -14,7 +14,7 @@ const webpackConfig = {
         use: 'ts-loader',
         exclude: /node_modules/
       }
-    ],
+    ]
   },
   plugins: [
     new CopyPlugin({

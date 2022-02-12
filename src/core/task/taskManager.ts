@@ -49,7 +49,7 @@ export async function runTasks(config: AppConfig) {
       const start = Date.now()
       await task.run(config)
       const end = Date.now()
-      console.log(`run [${i + 1}/${syncTasks.length}]: ${task.name} [${end - start} ms]`)
+      console.log(`task [${i + 1}/${syncTasks.length}]: ${task.name} [${end - start} ms]`)
     } catch (e: any) {
       console.log(`task '${task.name}' throws error`)
       console.error(e)
@@ -63,5 +63,6 @@ export async function runTasks(config: AppConfig) {
     }
   }
 
-  console.log('run tasks finished')
+  if (!config.install)
+    console.log(`run 'npm install' or 'yarn install' to install`)
 }

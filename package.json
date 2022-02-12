@@ -1,10 +1,13 @@
 {
   "name": "cdlpm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "./lib/index.js",
+  "bin": {
+    "cdlpm": "bin/cdlpm.js"
+  },
   "scripts": {
-    "dev": "ts-node src/index.ts create aaa",
+    "dev": "ts-node src/index.ts create",
     "build": "webpack",
     "build-tsc": "rm -rf lib && tsc",
     "test": "node lib/index.js create aaa"

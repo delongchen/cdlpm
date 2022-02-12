@@ -7,9 +7,9 @@ import { which } from 'shelljs'
 import {getTemplateIndex} from "./utils/pkg";
 const { version, description } = require('../package.json')
 
-const indexes = getTemplateIndex()
-
 async function start() {
+  const indexes = await getTemplateIndex()
+
   program
     .name('cdlpm')
     .usage('create <dirname> [template]')
@@ -26,30 +26,37 @@ async function start() {
 
   program.command('create')
     .argument('<DirName>', 'name of dir')
-    .argument('[template]', 'template', TemplateTypes.BASIC)
+    .option('-t --template <template>', 'template', TemplateTypes.BASIC)
+    .option('-i --install', 'install package')
     .description('create an empty package by DirName')
-    .action(async (targetDir, template) => {
+    .action(async (targetDir, opts) => {
+      const template = opts.template
       if (indexes[template] === undefined) {
         console.log(`no such template ${template}`)
         return
       }
-
-      const workDir = process.cwd()
 
       if (!which('git')) {
         console.log('Sorry, this script requires git')
         return
       }
 
+      const git = getGitInfo()
+      if (!(git.name && git.email)) {
+        console.log('git config error, please check it')
+        return
+      }
+
       const config: AppConfig = {
+        install: opts.install,
         targetDir,
         template,
-        workDir,
+        workDir: process.cwd(),
         context: {
           exists: false
         },
         indexes,
-        git: getGitInfo(),
+        git,
         helper: createConfigHelper(targetDir)
       }
 

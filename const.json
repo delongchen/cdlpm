@@ -1,5 +1,6 @@
 {
   "temp": "templates",
   "index_yaml": "index.yml",
-  "index": "index.json"
+  "index": "index.json",
+  "pkg": "package.json"
 }

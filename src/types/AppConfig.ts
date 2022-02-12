@@ -15,6 +15,7 @@ interface AppContext {
 }
 
 export interface AppConfig {
+  install: boolean
   targetDir: string
   template: string
   workDir: string

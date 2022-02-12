@@ -1,6 +1,7 @@
 import {AppHelper, GitUserInfo} from "../types/AppConfig";
 import { join } from 'path'
 import { exec } from 'shelljs'
+import { readFile } from 'fs/promises'
 
 export const createConfigHelper = (targetDir: string): AppHelper => {
   const workDir = process.cwd()
@@ -26,5 +27,18 @@ export function getGitInfo(): GitUserInfo {
   return {
     name: getExecStr(`${gitConfig}.name`),
     email: getExecStr(`${gitConfig}.email`)
+  }
+}
+
+export async function readJSON<T = any>(path: string) {
+  try {
+    const raw = await readFile(path, 'utf-8')
+    const result = JSON.parse(raw)
+    return <T>result
+  } catch (e: any) {
+    if (e.code === 'ENOENT') {
+      return null
+    }
+    throw e
   }
 }
