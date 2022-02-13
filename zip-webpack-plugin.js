@@ -111,7 +111,7 @@ class ZipWebpackPlugin {
 
           compilation.emitAsset(
             join(CONST.temp, CONST.index),
-            new RawSource(JSON.stringify(indexes, null, 2))
+            new RawSource(JSON.stringify(indexes))
           )
           cb()
         }

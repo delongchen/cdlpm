@@ -4,12 +4,10 @@ import {AppConfig} from "./types/AppConfig";
 import {createConfigHelper, getGitInfo} from "./utils/fs";
 import {runTasks} from "./core/task";
 import { which } from 'shelljs'
-import {getTemplateIndex} from "./utils/pkg";
+import {indexes} from './store/tempIndexes'
 const { version, description } = require('../package.json')
 
 async function start() {
-  const indexes = await getTemplateIndex()
-
   program
     .name('cdlpm')
     .usage('create <dirname> [template]')

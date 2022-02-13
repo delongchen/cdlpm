@@ -23,7 +23,7 @@ const webpackConfig = {
       ]
     }),
     new ZipWebpackPlugin([
-      'src/templates'
+      'templates'
     ]),
     new CleanWebpackPlugin
   ],

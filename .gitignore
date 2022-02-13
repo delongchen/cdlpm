@@ -2,6 +2,7 @@
 node_modules
 /lib
 /bin
+/templates
 
 
 # local env files

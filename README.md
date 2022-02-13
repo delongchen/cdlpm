@@ -12,7 +12,7 @@ npm install cdlpm -g
 ```
 ## usage
 ```shell
-cdlpm create <dirname> [template]
+cdlpm create <dirname> [-t <template>] [-i]
 ```
 will create a dir named 'dirname'
 

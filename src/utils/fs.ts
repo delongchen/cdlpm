@@ -2,6 +2,7 @@ import {AppHelper, GitUserInfo} from "../types/AppConfig";
 import { join } from 'path'
 import { exec } from 'shelljs'
 import { readFile } from 'fs/promises'
+import { parse as parseYAML } from 'yaml'
 
 export const createConfigHelper = (targetDir: string): AppHelper => {
   const workDir = process.cwd()
@@ -30,15 +31,21 @@ export function getGitInfo(): GitUserInfo {
   }
 }
 
-export async function readJSON<T = any>(path: string) {
-  try {
-    const raw = await readFile(path, 'utf-8')
-    const result = JSON.parse(raw)
-    return <T>result
-  } catch (e: any) {
-    if (e.code === 'ENOENT') {
-      return null
+function createReadDataApi(parser: (data: string) => any) {
+  return async <T = any>(path: string) => {
+    try {
+      const raw = await readFile(path, 'utf-8')
+      const result = parser(raw)
+      return <T>result
+    } catch (e: any) {
+      if (e.code === 'ENOENT') {
+        return null
+      }
+      throw e
     }
-    throw e
   }
 }
+
+export const readJSON = createReadDataApi(JSON.stringify)
+export const readYAML = createReadDataApi(parseYAML)
+
