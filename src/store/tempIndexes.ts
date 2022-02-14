@@ -3,7 +3,7 @@ import {readFileSync, writeFileSync} from 'fs'
 import {join} from 'path'
 const CONST = require('../../const.json')
 
-const indexesPath = join(__dirname, CONST.index)
+const indexesPath = join(__dirname, CONST.temp, CONST.index)
 
 function getIndexes() {
   try {

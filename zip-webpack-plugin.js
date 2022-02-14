@@ -100,11 +100,10 @@ class ZipWebpackPlugin {
 
           for (let i = 0; i < temps.length; i++) {
             const temp = temps[i]
-            const tempName = basename(temp)
             const { zip, index } = await createZip(temp)
-            indexes[tempName] = index
+            indexes[index.shortcut] = index
             compilation.emitAsset(
-              join(CONST.temp, tempName + '.zip'),
+              join(CONST.temp, index.shortcut + '.zip'),
               new RawSource(zip.toBuffer())
             )
           }

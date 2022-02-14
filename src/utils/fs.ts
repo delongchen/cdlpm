@@ -46,6 +46,6 @@ function createReadDataApi(parser: (data: string) => any) {
   }
 }
 
-export const readJSON = createReadDataApi(JSON.stringify)
+export const readJSON = createReadDataApi(JSON.parse)
 export const readYAML = createReadDataApi(parseYAML)
 

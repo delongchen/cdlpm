@@ -24,15 +24,10 @@ export const copyStatic: Task = {
   name: 'unzip template',
   async run(config) {
     const {helper, template} = config
-    const { BASIC } = TemplateTypes
     const output = helper.resolveTargetDir('')
 
     if (template) {
-      checkAndUnzip(BASIC, output);
-
-      if (template !== BASIC) {
-        checkAndUnzip(template, output)
-      }
+      checkAndUnzip(template, output)
     }
   }
 }

@@ -1,5 +1,4 @@
 import { program } from 'commander'
-import {TemplateTypes} from "./types/TemplateTypes";
 import {AppConfig} from "./types/AppConfig";
 import {createConfigHelper, getGitInfo} from "./utils/fs";
 import {runTasks} from "./core/task";
@@ -24,7 +23,7 @@ async function start() {
 
   program.command('create')
     .argument('<DirName>', 'name of dir')
-    .option('-t --template <template>', 'template', TemplateTypes.BASIC)
+    .option('-t --template <template>', 'template', 'ba')
     .option('-i --install', 'install package')
     .description('create an empty package by DirName')
     .action(async (targetDir, opts) => {
