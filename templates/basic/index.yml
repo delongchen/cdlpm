@@ -1,0 +1,3 @@
+shortcut: ba
+name: basic
+desc: a simple http server with ts-node
